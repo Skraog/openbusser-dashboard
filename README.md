@@ -1,36 +1,146 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OpenBusser Web 🚌
 
-## Getting Started
+Une plateforme web moderne et sécurisée pour gérer et contrôler les appareils IoT OpenBusser avec détection automatique des appareils et partage d'accès transparent.
 
-First, run the development server:
+## ✨ Fonctionnalités
 
+- 🔐 **Détection Automatique d'Appareils** - Connexion automatique lorsque votre appareil est détecté sur le réseau
+- 🎨 **Interface Moderne Sombre** - Interface belle et responsive avec animations fluides
+- 🔗 **Partage d'Accès** - Génération de liens d'invitation sécurisés pour partager le contrôle des appareils
+- 📊 **Tableau de Bord Temps Réel** - Surveillance du statut des appareils, connexions et statistiques
+- 🔒 **Sessions Sécurisées** - Sessions liées à l'IP avec empreinte digitale du navigateur
+- 👥 **Support Multi-utilisateurs** - Partage d'accès avec plusieurs utilisateurs en toute sécurité
+- 📱 **Design Responsive** - Fonctionne parfaitement sur bureau et mobile
+
+## 🚀 Démarrage Rapide
+
+### Prérequis
+
+- Node.js 18+ installé
+- npm ou yarn comme gestionnaire de packages
+- API OpenBusser en cours d'exécution sur localhost:8000
+
+### Installation
+
+1. **Cloner le dépôt :**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd ob.skraog.dev-web
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Installer les dépendances :**
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Démarrer le serveur de développement :**
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Ouvrir votre navigateur :**
+Naviguer vers [http://localhost:3000](http://localhost:3000)
 
-## Learn More
+## 📖 Utilisation
 
-To learn more about Next.js, take a look at the following resources:
+### Connexion de Votre Appareil
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Allumez votre appareil OpenBusser
+2. Assurez-vous qu'il est connecté au même réseau que votre ordinateur
+3. Ouvrez l'application web - elle détectera et se connectera automatiquement à votre appareil
+4. Vous serez redirigé vers le tableau de bord une fois authentifié
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Partage d'Accès
 
-## Deploy on Vercel
+1. Aller au Tableau de Bord
+2. Sélectionner un appareil dans le menu déroulant
+3. Cliquer sur "Générer un Lien d'Invitation"
+4. Partager le lien avec d'autres pour leur accorder l'accès
+5. Les invitations expirent après 24 heures par défaut
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Gestion des Sessions
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Voir toutes les sessions actives dans la page **Tableau de Bord**
+- Révoquer des sessions individuelles ou toutes les autres sessions
+- Les sessions sont automatiquement protégées par liaison IP et empreinte digitale du navigateur
+
+## 🏗️ Structure du Projet
+
+```
+ob.skraog.dev-web/
+├── src/
+│   ├── app/                    # Répertoire d'application Next.js
+│   │   ├── api/               # Routes API (proxy vers localhost:8000)
+│   │   ├── dashboard/         # Pages du tableau de bord
+│   │   ├── invite/            # Pages d'acceptation d'invitation
+│   │   └── page.tsx           # Page d'accueil
+│   ├── lib/                   # Utilitaires et clients API
+│   │   ├── api.ts            # Client API OpenBusser
+│   │   ├── types.ts          # Définitions TypeScript
+│   │   └── utils.ts          # Fonctions utilitaires
+├── public/                    # Assets statiques
+└── package.json
+```
+
+## 🔒 Fonctionnalités de Sécurité
+
+- **Liaison IP** : Sessions liées à votre adresse IP
+- **Empreinte Digitale du Navigateur** : Sessions liées à votre navigateur spécifique
+- **Timeout d'Inactivité** : Déconnexion automatique après 30 minutes d'inactivité
+- **Protection contre la Force Brute** : Protection contre les attaques par force brute
+- **Invitations Sécurisées** : Codes d'accès à durée limitée avec jetons à usage unique
+
+## 🛠️ Développement
+
+### Scripts Disponibles
+
+- `npm run dev` - Démarrer le serveur de développement
+- `npm run build` - Construire pour la production
+- `npm run start` - Démarrer le serveur de production
+- `npm run lint` - Exécuter ESLint
+
+### Stack Technologique
+
+- **Framework** : Next.js 15 (App Router)
+- **Langage** : TypeScript
+- **Styling** : Tailwind CSS
+- **Gestion d'État** : React Hooks
+- **API** : REST (proxy vers localhost:8000)
+
+## 📋 Points d'Accès API
+
+Toutes les routes API sont des proxies vers `http://localhost:8000/api/` :
+
+### Bussers (Applications de Bureau)
+- `POST /api/busser/register` - Enregistrer un nouveau busser
+- `GET /api/busser/list` - Lister les bussers du même IP
+
+### Sessions (Clients Navigateur)  
+- `POST /api/session/register` - Enregistrer une nouvelle session
+- `POST /api/session/heartbeat` - Envoyer un heartbeat de session
+- `POST /api/session/assign` - Assigner un busser à une session
+- `POST /api/session/match` - **Trouver les bussers disponibles** (point d'accès clé)
+- `GET /api/session/list` - Lister les sessions du même IP
+
+### Invitations
+- `POST /api/invite/create` - Créer une invitation de tâche
+- `GET /api/invite/list` - Lister les invitations du même IP
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! N'hésitez pas à soumettre une Pull Request.
+
+## 📄 Licence
+
+Ce projet est open source et disponible sous la licence MIT.
+
+## 💡 Conseils
+
+- Gardez votre firmware d'appareil à jour
+- Vérifiez régulièrement les sessions actives pour la sécurité
+- Utilisez des codes d'invitation forts et uniques lors du partage d'accès
+- Surveillez le statut de l'appareil depuis le tableau de bord
+
+---
+
+**Fait avec ❤️ par l'équipe OpenBusser**
