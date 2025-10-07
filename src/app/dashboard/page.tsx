@@ -152,12 +152,12 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <button
-                onClick={handleBackToDetection}
-                className="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-all duration-300 text-gray-300 hover:text-white text-sm"
-              >
-                Re-detect
-              </button>
+              {/*<button*/}
+              {/*  onClick={handleBackToDetection}*/}
+              {/*  className="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-all duration-300 text-gray-300 hover:text-white text-sm"*/}
+              {/*>*/}
+              {/*  Re-detect*/}
+              {/*</button>*/}
             </div>
           </div>
         </div>

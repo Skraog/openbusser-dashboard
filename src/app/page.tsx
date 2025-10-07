@@ -4,14 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { openBusserAPI } from '@/lib/api';
 import { sessionStorage } from '@/lib/utils';
-import { useToast } from '@/components/ToastProvider';
 
 export default function Home() {
   const router = useRouter();
-  const { addToast } = useToast();
   const [isDetecting, setIsDetecting] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isTestingBusser, setIsTestingBusser] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -75,35 +72,6 @@ export default function Home() {
     };
   }, [router]);
 
-  const testBusserRegistration = async () => {
-    setIsTestingBusser(true);
-    try {
-      const response = await fetch('/api/busser/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({})
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        addToast('Busser registered successfully!', 'success');
-        console.log('Busser registration response:', data);
-      } else {
-        addToast(`Busser registration failed: ${data.error || response.statusText}`, 'error');
-        console.error('Busser registration error:', data);
-      }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Network error';
-      addToast(`Busser registration failed: ${errorMessage}`, 'error');
-      console.error('Busser registration error:', error);
-    } finally {
-      setIsTestingBusser(false);
-    }
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] relative overflow-hidden">
       {/* Fond simple avec grille subtile */}
@@ -111,17 +79,6 @@ export default function Home() {
 
       {/* Effet de vignette */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.5)_100%)]"></div>
-
-      {/* Test button - positioned in top right */}
-      <div className="absolute top-4 left-4 z-20">
-        <button
-          onClick={testBusserRegistration}
-          disabled={isTestingBusser}
-          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 disabled:cursor-not-allowed rounded-lg transition-all duration-300 text-white text-sm font-medium hover:scale-105 disabled:hover:scale-100"
-        >
-          {isTestingBusser ? 'Testing...' : 'Test Busser Registration'}
-        </button>
-      </div>
 
       {/* Contenu principal */}
       <div className="relative z-10 text-center px-6 max-w-4xl">
